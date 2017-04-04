@@ -21,7 +21,7 @@ Var
    elemen      :String;
    Lagi        :char;
    store      : brg;
-   isi, Menu,sisip : integer;
+   isi, Menu,sisip,hapus,cari : integer;
 
 
 
@@ -44,13 +44,14 @@ begin
      gotoxy(30,17); write('PILIHAN ANDA ?       ');
      readln(Menu);
      //validasi menu pilihan
-      while (Menu <0 ) or (Menu > 5) do
+      while (Menu <0 ) or (Menu > 4) do
         begin
           gotoxy(30,18);writeln('Menu Tidak ditemukan !');
           readln(Menu);
         end;
 end;
 
+//PROCEDURE MENU SISIP
 procedure menusisip(Var sisip : integer);
 {I.S. : user memilih salah satu menu}
 {F.S. : menghasilkan menu yang dipilih}
@@ -61,7 +62,7 @@ repeat
      gotoxy(30,11); write('1. Sisip Depan       ');
      gotoxy(30,12); write('2. Sisip Tengah      ');
      gotoxy(30,13); write('3. Sisip Belakang    ');
-     gotoxy(30,14); write('0. Keluar            ');
+     gotoxy(30,14); write('0. Keluar ke menu    ');
      gotoxy(30,17); write('PILIHAN ANDA ?       ');
      readln(sisip);
      //validasi menu pilihan
@@ -70,16 +71,61 @@ repeat
           gotoxy(30,18);writeln('Menu Tidak ditemukan !');
           readln(sisip);
         end;
-        case (sisip) of
-              1 :begin
-                      sisipdepan(awal,akhir,elemen);
-                      clrscr;
 
-                  end;
-
-         end; //endcase
 until(sisip = 0);
 end;
+
+//PROCEDURE MENU HAPUS
+procedure menuhapus(Var hapus : integer);
+{I.S. : user memilih salah satu menu}
+{F.S. : menghasilkan menu yang dipilih}
+begin
+repeat
+     gotoxy(30,9);  write('     MENU HAPUS      ');
+     gotoxy(30,10); write('=====================');
+     gotoxy(30,11); write('1. Hapus Depan       ');
+     gotoxy(30,12); write('2. Hapus Tengah      ');
+     gotoxy(30,13); write('3. Hapus Belakang    ');
+     gotoxy(30,14); write('0. Keluar ke menu    ');
+     gotoxy(30,17); write('PILIHAN ANDA ?       ');
+     readln(hapus);
+     //validasi menu pilihan
+      while (hapus <0 ) or (hapus > 3) do
+        begin
+          gotoxy(30,18);writeln('Menu Tidak ditemukan !');
+          readln(hapus);
+        end;
+
+until(hapus = 0);
+end;
+
+
+//PROCEDURE MENU CARI DATA
+procedure menucari(Var cari : integer);
+{I.S. : user memilih salah satu menu}
+{F.S. : menghasilkan menu yang dipilih}
+begin
+repeat
+     gotoxy(30,9);  write('     MENU HAPUS      ');
+     gotoxy(30,10); write('=====================');
+     gotoxy(30,11); write('1. Cari Data Berdasarkan Nama       ');
+     gotoxy(30,12); write('2. Cari Data Berdasarkan Harga      ');
+     gotoxy(30,13); write('3. Hapus Belakang    ');
+     gotoxy(30,14); write('0. Keluar ke menu    ');
+     gotoxy(30,17); write('PILIHAN ANDA ?       ');
+     readln(cari);
+     //validasi menu pilihan
+      while (cari <0 ) or (cari > 3) do
+        begin
+          gotoxy(30,18);writeln('Menu Tidak ditemukan !');
+          readln(cari);
+        end;
+
+until(cari = 0);
+end;
+
+
+
 
 procedure sisipdepan (var awal,akhir :Point;Elemen :String);
 {I.S.:}
@@ -105,6 +151,23 @@ begin
          awal^.prev := Baru;
      end;
      awal := baru;
+end;
+
+
+
+//Tampil Data
+procedure tampildata(awal : Point);
+{I.S.:}
+{F.S.:}
+var
+   Bantu:Point;
+begin
+    Bantu := awal;
+    while (Bantu <> Nil) do
+      begin
+           writeln(Bantu^.info.kodebarang,'  ',Bantu^.info.namabarang);
+           Bantu := Bantu^.next;
+      end;
 end;
 
 {procedure registrasi(var hotel :Reservasi);
@@ -177,8 +240,21 @@ begin
               1 :begin
                       menusisip(sisip);
                       clrscr;
+
                       sisipdepan(awal,akhir,elemen);
+                      clrscr;
                   end;
+               2:begin
+                      menuhapus(hapus);
+                      clrscr;
+                 end;
+               3:begin
+                      menucari(cari);
+                      clrscr;
+                 end;
+               4:begin
+                      tampildata(awal);
+                 end;
 
          end; //endcase
        until(Menu =0);
