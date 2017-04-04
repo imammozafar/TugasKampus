@@ -1,0 +1,498 @@
+program TokoKomputer;
+{I.S.:}
+{F.S.:}
+uses crt;
+//Kamus Global
+const
+maks=20;
+type
+ point = ^Data;
+    hardware = record
+      kode, nama,tipe : string;
+      harga           : string;
+    end;
+    Data = record
+        info:hardware;
+        prev,next :Point;
+    end;
+    brg = array[1..maks]of hardware;
+Var
+   awal,akhir  :Point;
+   elemen      :String;
+   Lagi        :char;
+   store      : brg;
+   isi, Menu,sisip,hapus,cari : integer;
+
+//Subrutin Procedure Sisip Depan
+Procedure sisipdepan(var awal,akhir:point;elemen :String);
+   {I.S: menambahkan satu simpul baru di posisi pertama}
+   {F.S: menghasilkan list dengan simpul baru di posisi pertama}
+
+   var
+               Baru : point;
+
+   begin
+               New(Baru);
+               Baru^.info.kode :=elemen;
+               baru^.prev := nil;
+               write('Masukan kode  :');readln(baru^.info.kode);
+               write('Masukan nama  :');readln(baru^.info.nama);
+               write('Masukan tipe  :');readln(baru^.info.tipe);
+               write('Masukan harga :');readln(baru^.info.harga);
+                                      
+               if (awal = Nil)
+ then
+     begin
+          Baru^.next := Nil;
+          akhir := Baru;
+     end
+     else
+     begin
+         Baru^.next := awal;
+         awal^.prev := Baru;
+     end;
+     awal := baru;
+end;
+
+//Sisip Tengah
+{Procedure sisiptengah (var awal,akhir:point;elemen:string);}
+   {I.S: menyisipkan satu simpul baru sebelum simpul tertentu}
+   {F.S: menghasilkan list dengan simpul baru di posisi tertentu}
+
+  { var
+               baru,bantu       : point;
+               ketemu            : boolean;
+               carikod         : real;
+
+   begin
+               if (awal=nil) then
+               begin
+                           new(baru);
+                           write('Masukan kode  :');readln(baru^.info.kode);
+                           write('Masukan nama  :');readln(baru^.info.nama);
+                           write('Masukan tipe  :');readln(baru^.info.tipe);
+                           write('Masukan harga :');readln(baru^.info.harga);
+                           baru^.next:=nil;
+                           baru^.prev:=nil;
+                           awal:=baru;
+                           akhir:=baru;
+               end
+               else
+               begin
+                           write('Cari kode');readln(carikod);
+                           bantu:=awal;
+                           ketemu:=false;
+               end; }
+                           {searching}
+                          { while (bantu<>nil) and (not ketemu) do
+                                       if (bantu^.info.kode=carikod)
+                                       then
+                                       begin
+                                                   ketemu:=true
+                                       end
+                                       else
+                                       begin
+                                                   bantu:=bantu^.next;
+                                       end;
+                           end;   }
+                          
+                           {lakukan penyisipan pada simpul sebelumnya}        
+                          { if (ketemu) and (bantu<>awal)
+                           then
+                           begin   }
+                                       {sisip tengah}
+                                       {new(baru);
+                                       write('Masukan kode  :');readln(baru^.info.kode);
+                                       write('Masukan nama  :');readln(baru^.info.nama);
+                                       write('Masukan tipe  :');readln(baru^.info.tipe);
+                                       write('Masukan harga :');readln(baru^.info.harga);
+                                      
+                                       baru^.next:=bantu;
+                                       baru^.prev:=bantu^.prev;
+                                       bantu^.prev^.next:=baru;
+                                       bantu^.prev:=baru;
+
+
+                           else
+
+                           if (bantu=awal)
+                           then
+                           begin
+                                       write('silahkan lakukan penyisipan depan');
+                           end
+                           else
+                           begin
+                                       write('tidak ditemukan data yang dicari');
+                           end;
+                           end;
+               end;
+   end;
+  }
+
+//Sisip Akhir
+Procedure sisipakhir(var awal,akhir:point;elemen:string);
+   {I.S: menambahkan satu simpul baru di posisi akhir}
+   {F.S: menghasilkan list dengan simpul baru di posisi akhir}
+  
+   var
+               baru    : point;
+
+   begin
+               new(baru);
+               baru^.next := nil;
+               write('Masukan kode  :');readln(baru^.info.kode);
+               write('Masukan nama  :');readln(baru^.info.nama);
+               write('Masukan tipe  :');readln(baru^.info.tipe);
+               write('Masukan harga :');readln(baru^.info.harga);
+                                      
+               if (awal=nil)
+               then
+               begin
+                           baru^.prev := nil;
+                           awal := baru;
+                           akhir := baru;
+               end
+               else
+               begin
+                           baru^.prev := akhir;
+                           akhir^.next:= baru;
+                           akhir := baru;
+               end;
+   end;
+
+//HapusDepan
+Procedure hapusdepan (var awal,akhir:point;elemen:string);
+   {I.S: menghapus satu simpul di posisi pertama}
+   {F.S: menghasilkan list dengan keadaan simpul pertama terhapus}
+
+   var
+     phapus : point;
+
+   begin
+               if (awal = nil)
+               then
+               begin
+                    write('List masih kosong');
+               end
+               else
+               if (awal = akhir)
+               then
+               begin
+                           phapus := awal;
+                           awal := nil;
+                           akhir := nil;
+                            {elemen^.info := phapus^.info;}
+                           dispose(phapus);
+               end
+               else
+               begin
+                           phapus := awal;
+                           awal := awal^.next;
+                           awal^.prev := nil;
+                            {elemen^.info := phapus^.info;}
+                           dispose(phapus);
+               end;
+
+   end;
+
+//Hapus Tengah
+Procedure hapustengah(var awal,akhir:point;elemen:string);
+   {I.S: menghapus satu simpul berdasarkan posisi tertentu}
+   {F.S: menghasilkan list dengan keadaan satu simpul terhapus di posisi tertentu}
+
+   var
+
+               phapus            : point;
+               posisihapus,capos   : integer;
+
+   begin
+               write('Posisi Hapus:');readln(posisihapus); {untuk mencari posisi hapus}
+               phapus := awal;
+               capos := 1;
+                          
+               {searching}
+               while (phapus <> nil) and (capos  <> posisihapus) do
+               begin
+                           phapus := phapus^.next;
+                           capos := capos+1;
+               end;
+                          
+               {lakukan hapus tengah}         
+               if (phapus=nil)
+               then
+               begin
+                           write('Data masih kosong atau berada diluar jangkauan');
+               end
+               else
+               if (awal = akhir)
+               then
+               begin
+                           awal := nil;
+                           akhir := nil;
+                           {elemen^.info := phapus^.info;}
+                           dispose(phapus);
+               end
+               else
+               begin
+                           phapus^.prev^.next := phapus^.next;
+                           phapus^.next^.prev := phapus^.prev;
+                           {elemen^.info := phapus^.info;}
+                           dispose(phapus);
+               end;
+
+   end;
+
+//Hapus Akhir
+Procedure hapusakhir(var awal,akhir:point; store:brg);
+   {I.S: menghapus satu simpul di posisi akhir}
+   {F.S: menghasilkan list dengan keadaan simpul terakhir terhapus}
+
+   var
+               phapus            : point;
+               elemen            :hardware;
+   begin
+               if (awal = nil)
+               then
+               begin
+                           write('list masih kosong');
+               end
+               else
+               if (awal = akhir)
+               then
+               begin
+                           phapus := akhir;
+                           awal := nil;
+                           akhir := nil;
+                           {elemen^.info := phapus^.info;}
+                           dispose(phapus);
+               end
+               else
+               begin
+                           phapus:=akhir;
+                           akhir:=akhir^.prev;
+                           akhir^.next:=nil;
+                           {elemen^.info:=phapus^.info;}
+                           dispose(phapus);
+               end;
+
+   end;
+
+//CariBerdasarkan KodeBarang
+Procedure pencarian_kode (awal:point);
+   {I.S: Melakukan pencarian data unik nim dengan sequential search dengan boolean}
+   {F.S: Menampilkan hasil pencarian terhadap data unik nim}
+  
+   var
+               cari       : integer;
+               ketemu            : boolean;
+               bantu               : point;
+              
+   begin
+               write('Masukan kode yang dicari :'); readln(cari);
+               bantu := awal;
+               ketemu := false;
+
+               while (bantu <> nil) and (not ketemu) do
+               begin
+                           if (bantu^.info.kode = cari)
+                           then
+                           begin
+                                       ketemu := true
+                           end
+                           else
+                           begin
+                                       bantu := bantu^.next;
+                           end;
+               end;
+                          
+               if (ketemu)
+               then
+               begin
+                           write('Kode Barang ditemukan!');
+                           readln(bantu^.info.kode);
+                           readln (bantu^.info.nama);
+                           readln (bantu^.info.tipe);
+                           readln (bantu^.info.harga);
+               end
+               else
+               begin
+                           write('Tidak ditemukan kode barang tersebut');
+               end;
+   end;
+
+//Cari berdasarkan Nama
+Procedure pencarian_nama ( awal : point);
+   {I.S: Melakukan pencarian data tidak unik terhadap nama penyewa}
+   {F.S: Menampilkan seluruh data hasil pencarian yang berkaitan}
+  
+   var
+               nama_dicari    : string;
+               bantu               : point;
+              
+   begin
+               write('Masukan Nama Barang:'); readln(nama_dicari);
+               bantu := awal;
+               if (awal = nil)
+               then
+               begin
+                           write('List masih kosong');
+                end
+               else     
+                           while (bantu <> nil) do
+                           begin
+                                       if (bantu^.nama = nama_dicari)
+                                       then
+                                       begin
+                                                   readln(bantu^.info.kode);
+                                                   readln (bantu^.info.nama);
+                                                   readln (bantu^.info.tipe);
+                                                   readln (bantu^.info.harga);
+                                       end;
+                           bantu := bantu^.next;
+                           end;
+
+   end;
+
+//Procedure Urut
+Procedure selection_sort (I/O awal: point)
+   {I.S: Data sudah terdefinisi}
+   {F.S: Menghasilkan data simpul yang terurut descending berdasarkan nim}
+
+   Kamus :
+               i, max, j           : Point
+               Temp              : Datapendaftar
+
+   Algoritma :
+               i ? awal
+               while (i?.next ? nil) do
+                           max ? i
+                           j ? i?.next
+                           while (j?nil) do
+                                       if (j?.info.nim>max?.info.nim)  then
+                                                   max ? j
+                                       endif
+                                       j ? j?.next
+                           endwhile
+                          
+                           {pertukaran}
+                           temp ? i?.info
+                           i?.info ? max?.info
+                           max?.info ? temp
+                          
+                           i ? i?.next
+               endwhile
+   EndProcedure
+
+
+//Tampil data
+ Procedure daftar_penyewa (Input awal:point)
+   {I.S: Data penyewa sudah terdefinisi}
+   {F.S: Mencetak daftar penyewa ke piranti keluaran}
+  
+   Kamus:
+               bantu : point
+
+   Algoritma:
+               if (awal = nil) then
+                           output ("List masih kosong")
+               else     
+                           selection_sort (awal)
+                           bantu ? awal
+                           while (bantu?nil) do
+                                       output (bantu?.info.nim)
+                                       output (bantu?.info.nama)
+                                       output (bantu?.info.kota)
+                                       output (bantu?.info.lamasewa)
+                                       bantu?bantu?.next
+                           endwhile
+               endif
+   EndProcedure
+
+
+//penghancuran
+
+//tampil menu
+ Procedure tampilmenu(I/O menu:char)
+   {I.S: pilih menu dibaca dari piranti masukan}
+   {F.S: melakukan prosedur sesuai menu dipilih}
+
+   Algoritma:
+               output ("Menu")
+               output ("1. Daftar dengan Sisip Data")
+               output ("2. Hapus Data")
+               output ("3. Cari Data")
+               output ("4. Tampil Data")
+               output ("0. exit")
+               Input (menu)
+                        Depend on (menu)
+
+
+                 (menu=1)      : output ("1. Sisip Depan")
+                                         output ("2. Sisip Tengah")
+                                         output ("3. Sisip Akhir")
+                                         output ("4. Back")     
+  Input(menu)
+                                         Depend on (menu)
+                                                   (menu=1)        : sisipdepan(awal,akhir)
+                                                   (menu=2)        : sisiptengah(awal,akhir)
+                                                   (menu=3)        : sisipakhir(awal,akhir)
+                                                   (menu=4)        : clrscr
+                                         EndDepend
+                                                                
+(menu=2)     : output ("1. Hapus Depan")
+                                         output ("2. Hapus Tengah")
+                                         output ("3. Hapus Akhir")
+                                         output ("4. Back")     
+                                         Input(menu)
+                                         Depend on (menu)
+                                                   (menu=1)        : Hapusdepan(awal,akhir)
+                                                   (menu=2)        : Hapustengah(awal,akhir)
+                                                   (menu=3)        : Hapusakhir(awal,akhir)
+                                                   (menu=4)        : clrscr
+                                         EndDepend
+                                                                          
+(menu=3)     : output ("1. Cari NIM")
+                                         output ("2. Cari Nama")
+                                         output ("3. Back")     
+                                         Input(menu)
+                                         Depend on (menu)
+                                                   (menu=1)        : pencarian_nim(awal)
+                                                   (menu=2)        : pencarian_nama(awal)
+                                                   (menu=3)        : clrscr
+                                         EndDepend
+                                                                
+(menu=4)     : output ("1. Daftar Penyewa")
+                                         output ("2. Lama Sewa Tersingkat")
+                                         output ("3. Back")     
+                                         Input(menu)
+                                         Depend on (menu)
+                                                   (menu=1)        : daftar_penyewa(awal)
+                                                   (menu=2)        : sewa_tersingkat(awal)
+                                                   (menu=3)        : clrscr
+                                         EndDepend
+                                                                
+                           (menu=0)        : clrscr
+EndDepend    
+   Endprocedure
+  
+   Algoritma:       
+Penciptaan (awal,akhir)
+               repeat
+                           tampilmenu (menu)
+               until (menu=0)
+  
+               penghancuran (awal,akhir)
+
+
+//Program Utama
+begin
+ awal:=nil;
+ akhir:=nil;
+ sisipdepan(awal,akhir,elemen);
+ {sisiptengah(awal,akhir,elemen);}
+ sisipakhir(awal,akhir,elemen);
+ hapusdepan(awal,akhir,elemen);
+ hapustengah(awal,akhir,elemen);
+ hapusakhir(awal,akhir, store);
+ pencarian_kode(awal);
+end.
