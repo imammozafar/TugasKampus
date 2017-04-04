@@ -1,0 +1,173 @@
+
+
+
+
+program JadwalMatkul;
+uses crt;
+//KamusGlobal
+type
+    Point = ^Data;
+    Mahasiswa = record
+        nim,nama :String;
+     end;//end record jadwal
+    Data = record
+        info:Mahasiswa;
+        prev,next :Point;
+    end;
+var
+
+    awal,akhir  :Point;
+    elemen      :String;
+    Lagi        :char;
+
+
+
+
+
+procedure sisipdepan (var awal,akhir :Point;Elemen :String);
+{I.S.:}
+{F.S.:}
+var
+   Baru : Point;
+begin
+ New(Baru);
+ Baru^.info.nim :=elemen;
+ Write('Masukan Nama :'); readln(Baru^.info.nama);
+ Baru^.prev := Nil;
+ if (awal = Nil)
+ then
+     begin
+          Baru^.next := Nil;
+          akhir := Baru;
+     end
+     else
+     begin
+         Baru^.next := awal;
+         awal^.prev := Baru;
+     end;
+     awal := baru;
+end;
+
+procedure penghancuran(var awal,akhir : Point);
+{I.S.:}
+{F.S.:}
+var
+Phapus : Point;
+begin
+  Phapus := awal;
+  while(Phapus <> Nil) do
+    begin
+       awal := awal^.next;
+       Dispose(Phapus);
+       Phapus :=awal;
+    end;
+        akhir := Nil;
+end;
+
+procedure tampildata(awal : Point);
+{I.S.:}
+{F.S.:}
+var
+   Bantu:Point;
+begin
+    Bantu := awal;
+    while (Bantu <> Nil) do
+      begin
+           writeln(Bantu^.info.nim,'  ',Bantu^.info.nim);
+           Bantu := Bantu^.next;
+      end;
+end;
+
+
+
+
+
+
+
+{procedure urutkodeasc(awal :Point;var awal2,akhir2 : Point); }
+{I.S.:}
+{F.S.:}
+{var
+Bantu,Bantu2,Baru :Point;
+ketemu :boolean;
+begin
+     awal2:=Nil;
+     akhir2:=Nil;
+     Bantu:=awal;
+     while(Bantu<>Nil)do
+       begin
+            New(Baru);
+            Baru^.info:=Bantu^.info;
+            if(awal2 = Nil)
+            then
+                begin
+                     Baru^.next:=Nil;
+                     Baru^.prev:=Nil;
+                     awal2 := Baru;
+                     akhir2 := Baru;
+                end
+                else
+                begin
+                     if(Baru^.info.nim < awal^.info.nim)
+                     then
+                     begin
+                     //sisipdepan
+                          Baru^.prev  := Nil;
+                          Baru^.next  := awal2;
+                          awal2^.prev := Baru;
+                          awal2       := Baru;
+                      end
+                      else
+                      begin
+                           if(Baru^.info.nim > akhir2^.info.nim)
+                           then
+                               begin
+                                    //sisipbelakang
+                                    Baru^.next  := Nil;
+                                    Baru^.prev  := akhir2;
+                                    akhir2^.next := Baru;
+                                    akhir2       := Baru;
+                               end
+                               else
+                               begin
+                                    Bantu2:=awal2;
+                                    ketemu :=false;
+                                    while(Not ketemu)do
+                                      begin
+                                           if(Baru^.info.nim > Baru^.info.nim)
+                                           then
+                                               ketemu:=true
+                                           else
+                                               Bantu2 := Bantu2^.next;
+                                      end;
+                                      Baru^.next := Bantu2;
+                                      Baru^.prev := Bantu2^.prev;
+                                      Bantu2^.prev^.next := Baru;
+                                      Bantu2^.prev := Baru;
+                               end;
+                end;
+end;
+ }
+
+
+//program utama
+begin
+  awal:=Nil;
+  akhir:=Nil;
+  repeat
+        write('Masukan Nim :'); readln(elemen);
+
+        write('Mau memasukan data lagi [Y/T]');
+        readln(Lagi);
+        writeln;
+  until(Lagi='T') or (Lagi='t');
+  sisipdepan(awal,akhir,elemen);
+  {urutkodeasc(awal,awal2,akhir2); }
+  tampildata(awal);
+  penghancuran(awal,akhir);
+  {CariNim(awal);}
+ { tampildata(awal2); }
+
+
+
+end.
