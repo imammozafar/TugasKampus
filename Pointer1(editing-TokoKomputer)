@@ -1,0 +1,187 @@
+program TokoKomputer;
+{I.S. :user memasukan data b}
+{F.S. : menampilkan data  yang sudah terurut}
+uses crt;
+const
+     maks = 20;
+
+type
+ Point = ^Data;
+    hardware = record
+      kodebarang, namabarang,tipe,merk : string;
+      harga           : string;
+    end;
+    Data = record
+        info:hardware;
+        prev,next :Point;
+    end;
+    brg = array[1..maks]of hardware;
+Var
+   awal,akhir  :Point;
+   elemen      :String;
+   Lagi        :char;
+   store      : brg;
+   isi, Menu,sisip : integer;
+
+
+
+
+
+
+
+ //Prosedur menu pilihan
+procedure MenuPilihan(Var Menu : integer);
+{I.S. : user memilih salah satu menu}
+{F.S. : menghasilkan menu yang dipilih}
+begin
+     gotoxy(30,9);  write('     MENU UTAMA      ');
+     gotoxy(30,10); write('=====================');
+     gotoxy(30,11); write('1. Sisip Data        ');
+     gotoxy(30,12); write('2. Hapus Data        ');
+     gotoxy(30,13); write('3. Cari Data         ');
+     gotoxy(30,14); write('4. Tampil Data       ');
+     gotoxy(30,15); write('0. Keluar            ');
+     gotoxy(30,17); write('PILIHAN ANDA ?       ');
+     readln(Menu);
+     //validasi menu pilihan
+      while (Menu <0 ) or (Menu > 5) do
+        begin
+          gotoxy(30,18);writeln('Menu Tidak ditemukan !');
+          readln(Menu);
+        end;
+end;
+
+procedure menusisip(Var sisip : integer);
+{I.S. : user memilih salah satu menu}
+{F.S. : menghasilkan menu yang dipilih}
+begin
+repeat
+     gotoxy(30,9);  write('     MENU SISIP      ');
+     gotoxy(30,10); write('=====================');
+     gotoxy(30,11); write('1. Sisip Depan       ');
+     gotoxy(30,12); write('2. Sisip Tengah      ');
+     gotoxy(30,13); write('3. Sisip Belakang    ');
+     gotoxy(30,14); write('0. Keluar            ');
+     gotoxy(30,17); write('PILIHAN ANDA ?       ');
+     readln(sisip);
+     //validasi menu pilihan
+      while (sisip <0 ) or (sisip > 3) do
+        begin
+          gotoxy(30,18);writeln('Menu Tidak ditemukan !');
+          readln(sisip);
+        end;
+        case (sisip) of
+              1 :begin
+                      sisipdepan(awal,akhir,elemen);
+                      clrscr;
+
+                  end;
+
+         end; //endcase
+until(sisip = 0);
+end;
+
+procedure sisipdepan (var awal,akhir :Point;Elemen :String);
+{I.S.:}
+{F.S.:}
+var
+   Baru : Point;
+begin
+ New(Baru);
+ Baru^.info.kodebarang :=elemen;
+ Write('Nama  :'); readln(Baru^.info.namabarang);
+ Write('Tipe :'); readln(Baru^.info.tipe);
+ Write('Merk :'); readln(Baru^.info.merk);
+ baru^.prev := Nil;
+ if (awal = Nil)
+ then
+     begin
+          Baru^.next := Nil;
+          akhir := Baru;
+     end
+     else
+     begin
+         Baru^.next := awal;
+         awal^.prev := Baru;
+     end;
+     awal := baru;
+end;
+
+{procedure registrasi(var hotel :Reservasi);
+var
+   i : integer;
+begin
+clrscr;
+   write('Masukan data pemesanan pengunjung :');
+   readln(isi);
+   clrscr;
+   write('        FORM MEMASUKAN DATA PEMESANAN PENGUNJUNG       ');
+   write('-------------------------------------------------------');
+   writeln;
+   gotoxy(1,4);
+   write('|    Nama    | Checkin  | Checkout |    Banyak orang   |');
+   gotoxy(1,5);
+   write('|------------|----------|----------|-------------------|');
+   for i := 1 to isi do
+   begin
+        gotoxy(1,i+5);
+        write('|            |          |          |                  |');
+        gotoxy(2,i+5); readln(hotel[i].nama);
+        gotoxy(15,i+5); readln(hotel[i].checkin);
+        gotoxy(26,i+5); readln(hotel[i].checkout);
+        gotoxy(46,i+5); readln(hotel[i].banyakorg);
+        //lakukan untuk memasukan field yang lainnya
+   end;
+   gotoxy(1,i+6);
+   writeln('------------------------------------------------------------');
+}
+{
+   writeln;
+  writeln('                Daftar                ');
+   write('|------------|----------|----------|-------------------|');
+   write('|    Nama    | Checkin  | Checkout |    Banyak orang   |');
+   write('|------------|----------|----------|-------------------|');
+  for i := 1 to isi do
+  begin
+    writeln('|    |                  |                  |     |');
+    gotoxy(4, i+isi+10); write(i);
+    gotoxy(8, i+isi+10); readln(hotel[i].nokmr);
+    hotel[i].nokmr := (hotel[i].nokmr);
+    gotoxy(27,i+isi+10); readln(hotel[i].tipekamar);
+    hotel[i].tipekamar := (hotel[i].tipekamar);
+ }   {gotoxy(47,i+isi+10); readln(MK[i].SKS);}
+  {end;
+  writeln('+----+------------------+------------------+-----+');
+  write('Tekan Enter Untuk Melanjutkan!'); readln;
+
+end; }
+
+{procedure ();
+begin
+
+end;
+ }
+
+
+
+
+
+
+begin
+
+       repeat
+         clrscr;
+         MenuPilihan(Menu);
+         clrscr;
+         case (Menu) of
+              1 :begin
+                      menusisip(sisip);
+                      clrscr;
+                      sisipdepan(awal,akhir,elemen);
+                  end;
+
+         end; //endcase
+       until(Menu =0);
+
+
+end.
